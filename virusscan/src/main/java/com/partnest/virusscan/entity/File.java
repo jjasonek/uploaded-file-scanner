@@ -22,7 +22,7 @@ import lombok.ToString;
 public class File {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)     // GenerationType.IDENTITY did not work for MySQL
     private Long fileId;
 
     private String fileName;
