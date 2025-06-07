@@ -1,7 +1,16 @@
 package com.partnest.virusscan.dto;
 
-public class FileDto {
+import com.partnest.virusscan.constants.FileStatus;
+import lombok.Builder;
+import lombok.Data;
 
-    public String fileName;
-    public byte[] fileData;
+import java.io.Serializable;
+
+@Builder
+@Data
+public class FileDto {
+    private String fileId;
+    private String fileName;
+    private FileStatus fileStatus;
+    private byte[] fileData;
 }

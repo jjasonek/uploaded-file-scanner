@@ -3,7 +3,8 @@ package com.partnest.virusscan.controller;
 import com.partnest.virusscan.constants.FileConstants;
 import com.partnest.virusscan.constants.FileStatus;
 import com.partnest.virusscan.dto.FileDto;
-import com.partnest.virusscan.dto.ResponseDto;
+import com.partnest.virusscan.dto.FileResponseDto;
+import com.partnest.virusscan.exception.FileReadException;
 import com.partnest.virusscan.service.IFileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(path = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -25,22 +28,29 @@ public class FileController {
     private final IFileService fileService;
 
     @PostMapping(path = "/upload", consumes = "multipart/form-data")
-    public ResponseEntity<ResponseDto> uploadFile(
+    public ResponseEntity<FileResponseDto> uploadFile(
             @RequestPart String fileName,
             @RequestPart MultipartFile fileData
-//           @RequestBody FileDto fileDto
     ) {
 
-        fileService.persistFile(fileName, fileData);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(new ResponseDto(FileStatus.NEW, FileConstants.FILE_UPLOAD_OK_MESSAGE));
+        try {
+            FileDto fileDto = FileDto.builder()
+                                     .fileName(fileName)
+                                     .fileStatus(FileStatus.NEW)
+                                     .fileData(fileData.getBytes()).build();
+            FileResponseDto fileResponseDto = fileService.persistFile(fileDto);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(fileResponseDto);
+        } catch (IOException e) {
+            throw new FileReadException(FileConstants.FILE_READ_EXCEPTION_MESSAGE);
+        }
     }
 
     @GetMapping("/fileStatus")
-    public ResponseEntity<ResponseDto> getFileStatus() {
+    public ResponseEntity<FileResponseDto> getFileStatus() {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(new ResponseDto(FileStatus.NEW, FileConstants.FILE_UPLOAD_OK_MESSAGE));
+                .body(FileResponseDto.builder().build());
     }
 }

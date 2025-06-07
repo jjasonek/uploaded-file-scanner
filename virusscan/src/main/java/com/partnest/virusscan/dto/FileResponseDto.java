@@ -2,12 +2,15 @@ package com.partnest.virusscan.dto;
 
 import com.partnest.virusscan.constants.FileStatus;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 @AllArgsConstructor
-public class ResponseDto {
+@Builder
+public class FileResponseDto {
     private FileStatus fileStatus;
-//    private String responseCode;
-    private String responseMessage;
+    private String fileName;
+    private String fileId;
 }

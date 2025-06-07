@@ -14,7 +14,7 @@ public class RabbitMQConfig {
 
     @Bean
     public Queue queue() {
-        return new Queue("virus-scan-queue", false);
+        return new Queue("virus-scan-queue");
     }
 
     @Bean

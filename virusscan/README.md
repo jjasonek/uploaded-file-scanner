@@ -23,6 +23,7 @@ docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:4-manag
 - Add actual virus scan functionality.
 - Dockerize the application including MySQL and RabbitMQ.
 - Try some more appropriate date type for the file (blob/clob).
+- Try to work with file without "touching" it. (serializing / deserializing).
 ### optional
 - Use MongoDB instead of MySQL
 - Use Kafka instead of RabbitMQ

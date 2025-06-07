@@ -8,10 +8,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -19,11 +22,12 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class File {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)     // GenerationType.IDENTITY did not work for MySQL
-    private Long fileId;
+    @GeneratedValue(strategy = GenerationType.UUID)     // GenerationType.IDENTITY did not work for MySQL
+    private UUID fileId;
 
     private String fileName;
 
