@@ -17,9 +17,9 @@ docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:4-manag
 
 
 ## TO DO LIST
-- Use more unique file identifier like UUID. FileName is not sufficient.
-- Use transactions for file upload.
-- Use transaction for file status update.
+- Use more unique file identifier like UUID. FileName is not sufficient. **OK**
+- Use transactions for file upload. **OK**
+- Use transaction for file status update. **OK**
 - Add actual virus scan functionality.
 - Dockerize the application including MySQL and RabbitMQ.
 - Try some more appropriate date type for the file (blob/clob).
