@@ -16,6 +16,10 @@ FLUSH PRIVILEGES;
 docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:4-management
 
 
+### docker for ClamAv 
+docker pull clamav/clamav
+
+
 ## TO DO LIST
 - Use more unique file identifier like UUID. FileName is not sufficient. **OK**
 - Use transactions for file upload. **OK**

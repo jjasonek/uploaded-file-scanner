@@ -1,6 +1,7 @@
 package com.partnest.virusscan.entity;
 
 import com.partnest.virusscan.constants.FileStatus;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -34,6 +35,7 @@ public class File {
     @Enumerated(EnumType.STRING)
     private FileStatus fileStatus;
 
+    @Column(columnDefinition = "BLOB")
     private byte[] fileData;
 
 }

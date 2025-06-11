@@ -7,6 +7,7 @@ import com.partnest.virusscan.dto.FileResponseDto;
 import com.partnest.virusscan.exception.FileReadException;
 import com.partnest.virusscan.service.IFileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 
 @RequiredArgsConstructor
@@ -29,13 +31,11 @@ public class FileController {
 
     @PostMapping(path = "/upload", consumes = "multipart/form-data")
     public ResponseEntity<FileResponseDto> uploadFile(
-            @RequestPart String fileName,
             @RequestPart MultipartFile fileData
     ) {
-
         try {
             FileDto fileDto = FileDto.builder()
-                                     .fileName(fileName)
+                                     .fileName(fileData.getOriginalFilename())
                                      .fileStatus(FileStatus.NEW)
                                      .fileData(fileData.getBytes()).build();
             FileResponseDto fileResponseDto = fileService.persistFile(fileDto);
