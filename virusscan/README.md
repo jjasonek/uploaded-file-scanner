@@ -12,9 +12,10 @@ GRANT ALL PRIVILEGES ON *.* TO 'admin'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 
 
-### docker container for RabbitMQ 
+### docker container for RabbitMQ
 docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:4-management
 
+Then we can login to RabbitMQ console here: http://localhost:15672/
 
 ### docker for ClamAv 
 docker pull clamav/clamav

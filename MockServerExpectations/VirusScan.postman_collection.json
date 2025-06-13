@@ -1,0 +1,192 @@
+{
+	"info": {
+		"_postman_id": "8f3413a9-2a63-4eb2-8579-ba79161d2c0c",
+		"name": "VirusScan",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34267367"
+	},
+	"item": [
+		{
+			"name": "Mock Server",
+			"item": [
+				{
+					"name": "Add Expectations",
+					"item": [
+						{
+							"name": "HelloMockServer",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": \"helloMockServer\",\r\n    \"priority\": 0,\r\n    \"httpRequest\": {\r\n        \"method\": \"GET\",\r\n        \"path\": \"/test/hello\"\r\n    },\r\n    \"httpResponse\":{\r\n        \"delay\": {\r\n            \"timeUnit\": \"SECONDS\",\r\n            \"value\": 5\r\n        },\r\n        \"statusCode\": 200,\r\n        \"body\": {\r\n            \"message\": \"Hello from Mock Server!\"\r\n        }\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:1080/mockserver/expectation",
+									"host": [
+										"localhost"
+									],
+									"port": "1080",
+									"path": [
+										"mockserver",
+										"expectation"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Hello test",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "mockCleanFile",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": \"mockCleanFile\",\r\n    \"priority\": 0,\r\n    \"httpRequest\": {\r\n        \"method\": \"POST\",\r\n        \"path\": \"/api/scan\",\r\n        \"body\": {\r\n            \"type\": \"BINARY\",\r\n            \"string\": \"some text\"\r\n        }\r\n    },\r\n    \"httpResponse\": {\r\n        \"delay\": {\r\n            \"timeUnit\": \"SECONDS\",\r\n            \"value\": 5\r\n        },\r\n        \"statusCode\": 200,\r\n        \"body\": {\r\n            \"result\": \"clean\"\r\n        }\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:1080/mockserver/expectation",
+									"host": [
+										"localhost"
+									],
+									"port": "1080",
+									"path": [
+										"mockserver",
+										"expectation"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "mockInfectedFile",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": \"mockInfectedFile\",\r\n    \"priority\": 0,\r\n    \"httpRequest\": {\r\n        \"method\": \"POST\",\r\n        \"path\": \"/api/scan\",\r\n        \"body\": {\r\n            \"type\": \"BINARY\",\r\n            \"string\": \"infected file\"\r\n        }\r\n    },\r\n    \"httpResponse\": {\r\n        \"delay\": {\r\n            \"timeUnit\": \"SECONDS\",\r\n            \"value\": 5\r\n        },\r\n        \"statusCode\": 200,\r\n        \"body\": {\r\n            \"result\": \"infected\"\r\n        }\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:1080/mockserver/expectation",
+									"host": [
+										"localhost"
+									],
+									"port": "1080",
+									"path": [
+										"mockserver",
+										"expectation"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "uploadClean",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "fileName",
+							"value": "fileName",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "fileData",
+							"type": "file",
+							"src": "/C:/Training/CheckForViruses/files/fileClean.txt"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/upload",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"upload"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "uploadInfected",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "fileName",
+							"value": "fileName",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "fileData",
+							"type": "file",
+							"src": "/C:/Training/CheckForViruses/files/fileInfected.txt"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/upload",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"upload"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "status",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}

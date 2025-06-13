@@ -1,9 +1,11 @@
 package com.partnest.virusscan.service.impl;
 
+import com.partnest.virusscan.apiclient.VirusScanClient;
 import com.partnest.virusscan.constants.FileConstants;
 import com.partnest.virusscan.constants.FileStatus;
 import com.partnest.virusscan.entity.File;
 import com.partnest.virusscan.exception.FileNotFoundException;
+import com.partnest.virusscan.exception.FileScanException;
 import com.partnest.virusscan.repository.FileRepository;
 import com.partnest.virusscan.service.IVirusScanService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.UUID;
 
 @Slf4j
@@ -20,14 +23,32 @@ import java.util.UUID;
 public class VirusScanServiceImpl implements IVirusScanService {
 
     private final FileRepository fileRepository;
+    private final VirusScanClient virusScanClient;
 
     @Override
     public void scanFile(String fileId) {
         log.info("Scanning file: {}", fileId);
         File file = fileRepository.findById(UUID.fromString(fileId))
-                .orElseThrow(() -> new FileNotFoundException(FileConstants.FILE_NOT_FOUND_EXCEPTION_MESSAGE));
+                                  .orElseThrow(() -> new FileNotFoundException(MessageFormat.format(
+                                          FileConstants.FILE_NOT_FOUND_EXCEPTION_MESSAGE,
+                                          fileId
+                                  )));
         file.setFileStatus(FileStatus.SCANNING);
-        fileRepository.save(file);
-        // TODO implement virus scan for the File file.
+        File updatedFile = fileRepository.save(file);
+        String result = virusScanClient.scanFile(file.getFileData());
+        log.info("Scan result: {}", result);
+        updatedFile.setFileStatus(evaluateScanResult(result, fileId));
+        fileRepository.save(updatedFile);
+    }
+
+    private FileStatus evaluateScanResult(String scanResult, String fileId) {
+        return switch (scanResult) {
+            case "clean" -> FileStatus.CLEAN;
+            case "infected" -> FileStatus.INFECTED;
+            default -> throw new FileScanException(MessageFormat.format(
+                    FileConstants.FILE_SCAN_EXCEPTION_MESSAGE,
+                    fileId
+            ));
+        };
     }
 }
