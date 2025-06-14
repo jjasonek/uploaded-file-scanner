@@ -4,16 +4,13 @@ import com.partnest.virusscan.apiclient.VirusScanClient;
 import com.partnest.virusscan.constants.FileConstants;
 import com.partnest.virusscan.constants.FileStatus;
 import com.partnest.virusscan.entity.File;
-import com.partnest.virusscan.exception.FileNotFoundException;
 import com.partnest.virusscan.exception.FileScanException;
-import com.partnest.virusscan.repository.FileRepository;
+import com.partnest.virusscan.service.IFileService;
 import com.partnest.virusscan.service.IVirusScanService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.UUID;
 
 @Slf4j
 @Transactional
@@ -21,23 +18,17 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class VirusScanServiceImpl implements IVirusScanService {
 
-    private final FileRepository fileRepository;
     private final VirusScanClient virusScanClient;
+    private final IFileService fileService;
 
     @Override
     public void scanFile(String fileId) {
         log.info("Scanning file: {}", fileId);
-        File file = fileRepository.findById(UUID.fromString(fileId))
-                                  .orElseThrow(() -> new FileNotFoundException(String.format(
-                                          FileConstants.FILE_NOT_FOUND_EXCEPTION_MESSAGE,
-                                          fileId
-                                  )));
-        file.setFileStatus(FileStatus.SCANNING);
-        File updatedFile = fileRepository.save(file);
+        File file = fileService.getFile(fileId);
+        File updatedFile = fileService.updateFileStatus(file, FileStatus.SCANNING);
         String result = virusScanClient.scanFile(file.getFileData());
         log.info("Scan result: {}", result);
-        updatedFile.setFileStatus(evaluateScanResult(result, fileId));
-        fileRepository.save(updatedFile);
+        fileService.updateFileStatus(updatedFile, evaluateScanResult(result, fileId));
     }
 
     private FileStatus evaluateScanResult(String scanResult, String fileId) {

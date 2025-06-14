@@ -44,7 +44,18 @@
 							"name": "Hello test",
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": {
+									"raw": "localhost:1080/test/hello",
+									"host": [
+										"localhost"
+									],
+									"port": "1080",
+									"path": [
+										"test",
+										"hello"
+									]
+								}
 							},
 							"response": []
 						},
@@ -184,7 +195,25 @@
 			"name": "status",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/fileStatus?fileId=8fb18131-8f7b-4ea1-a646-84f311e7eb78",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"fileStatus"
+					],
+					"query": [
+						{
+							"key": "fileId",
+							"value": "8fb18131-8f7b-4ea1-a646-84f311e7eb78"
+						}
+					]
+				}
 			},
 			"response": []
 		}

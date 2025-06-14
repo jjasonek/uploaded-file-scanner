@@ -14,6 +14,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class FileServiceImpl implements IFileService {
@@ -30,20 +32,27 @@ public class FileServiceImpl implements IFileService {
     }
 
     @Override
-    public FileStatus getFileStatus(String fileName) {
-        File file = fileRepository.findFileByFileName(fileName)
-                                  .orElseThrow(() -> new FileNotFoundException(String.format(
-                                          FileConstants.FILE_NOT_FOUND_EXCEPTION_MESSAGE,
-                                          fileName
-                                  )));
-        return file.getFileStatus();
+    public FileResponseDto getFileStatus(String fileId) {
+        File file = findFile(fileId);
+        return FileMapper.entityToResponseDto(file);
     }
 
-//    @Override
-//    public void updateFileStatus(Long FileId, FileStatus fileStatus) {
-//        File file = fileRepository.findById(FileId)
-//                .orElseThrow(() -> new FileNotFoundException(FileConstants.FILE_NOT_FOUND_EXCEPTION_MESSAGE));
-//        file.setFileStatus(fileStatus);
-//        fileRepository.save(file);
-//    }
+    @Override
+    public File getFile(String fileId) {
+        return findFile(fileId);
+    }
+
+    @Override
+    public File updateFileStatus(File file, FileStatus fileStatus) {
+        file.setFileStatus(fileStatus);
+        return fileRepository.save(file);
+    }
+
+    private File findFile(String fileId) {
+        return fileRepository.findById(UUID.fromString(fileId))
+                             .orElseThrow(() -> new FileNotFoundException(String.format(
+                                     FileConstants.FILE_NOT_FOUND_EXCEPTION_MESSAGE,
+                                     fileId
+                             )));
+    }
 }
