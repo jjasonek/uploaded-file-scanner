@@ -13,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.MessageFormat;
 import java.util.UUID;
 
 @Slf4j
@@ -29,7 +28,7 @@ public class VirusScanServiceImpl implements IVirusScanService {
     public void scanFile(String fileId) {
         log.info("Scanning file: {}", fileId);
         File file = fileRepository.findById(UUID.fromString(fileId))
-                                  .orElseThrow(() -> new FileNotFoundException(MessageFormat.format(
+                                  .orElseThrow(() -> new FileNotFoundException(String.format(
                                           FileConstants.FILE_NOT_FOUND_EXCEPTION_MESSAGE,
                                           fileId
                                   )));
@@ -45,7 +44,7 @@ public class VirusScanServiceImpl implements IVirusScanService {
         return switch (scanResult) {
             case "clean" -> FileStatus.CLEAN;
             case "infected" -> FileStatus.INFECTED;
-            default -> throw new FileScanException(MessageFormat.format(
+            default -> throw new FileScanException(String.format(
                     FileConstants.FILE_SCAN_EXCEPTION_MESSAGE,
                     fileId
             ));

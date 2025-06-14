@@ -32,7 +32,10 @@ public class FileServiceImpl implements IFileService {
     @Override
     public FileStatus getFileStatus(String fileName) {
         File file = fileRepository.findFileByFileName(fileName)
-                      .orElseThrow(() -> new FileNotFoundException(FileConstants.FILE_NOT_FOUND_EXCEPTION_MESSAGE));
+                                  .orElseThrow(() -> new FileNotFoundException(String.format(
+                                          FileConstants.FILE_NOT_FOUND_EXCEPTION_MESSAGE,
+                                          fileName
+                                  )));
         return file.getFileStatus();
     }
 
