@@ -17,13 +17,14 @@ docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:4-manag
 
 Then we can login to RabbitMQ console here: http://localhost:15672/
 
-### docker for ClamAv 
-docker pull clamav/clamav
+### docker for MockServer loading expectations
+docker run --name virus_scan_mockserver -v C:\Training\CheckForViruses\MockServerData:/config 
+-e MOCKSERVER_INITIALIZATION_JSON_PATH="/config/initializerJson.json" -p 1080:1080 mockserver/mockserver
 
 ### postman collection:
 "C:\Training\CheckForViruses\MockServerExpectations\VirusScan.postman_collection.json"
 
-### set expectations
+### optionally set expectations
 This must be done before we start upload files for scanning.
 PUT localhost:1080/mockserver/expectation
 {

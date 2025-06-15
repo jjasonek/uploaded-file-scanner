@@ -1,0 +1,46 @@
+[
+  {
+    "id": "mockCleanFile",
+    "priority": 0,
+    "httpRequest": {
+      "method": "POST",
+      "path": "/api/scan",
+      "body": {
+        "type": "BINARY",
+        "string": "some text"
+      }
+    },
+    "httpResponse": {
+      "delay": {
+        "timeUnit": "SECONDS",
+        "value": 5
+      },
+      "statusCode": 200,
+      "body": {
+        "result": "clean"
+      }
+    }
+  },
+  {
+    "id": "mockInfectedFile",
+    "priority": 0,
+    "httpRequest": {
+      "method": "POST",
+      "path": "/api/scan",
+      "body": {
+        "type": "BINARY",
+        "string": "infected file"
+      }
+    },
+    "httpResponse": {
+      "delay": {
+        "timeUnit": "SECONDS",
+        "value": 5
+      },
+      "statusCode": 200,
+      "body": {
+        "result": "infected"
+      }
+    }
+  }
+]
