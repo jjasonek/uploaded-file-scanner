@@ -1,0 +1,69 @@
+services:
+
+  virusscan-db:
+    image: mysql:latest
+    container_name: virusscan-db
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=virusscan
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      timeout: 10s
+      retries: 10
+      interval: 10s
+      start_period: 10s
+    networks:
+      - virusscan
+
+  rabbitmq:
+    image: rabbitmq:4-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      timeout: 10s
+      retries: 10
+      interval: 10s
+      start_period: 10s
+    networks:
+      - virusscan
+
+  mockserver:
+    image: mockserver/mockserver
+    container_name: virus_scan_mockserver
+    ports:
+      - "1080:1080"
+    environment:
+      MOCKSERVER_INITIALIZATION_JSON_PATH: "/config/initializerJson.json"
+    volumes:
+      - ../../MockServerData:/config
+    networks:
+      - virusscan
+
+  virusscan:
+    image: virusscan:s1
+    container_name: virusscan
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_APPLICATION_NAME: "virusscan"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://virusscan-db:3306/virusscan"
+      SPRING_DATASOURCE_USERNAME: "root"
+      SPRING_DATASOURCE_PASSWORD: "root"
+      SPRING_RABBITMQ_HOST: "rabbitmq"
+      VISRUSSCAN_SCANNER_BASE-URL: "http://mockserver:1080"
+    depends_on:
+      virusscan-db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - virusscan
+
+networks:
+    virusscan:
+        driver: bridge

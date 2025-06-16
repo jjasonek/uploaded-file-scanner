@@ -128,12 +128,6 @@
 					"mode": "formdata",
 					"formdata": [
 						{
-							"key": "fileName",
-							"value": "fileName",
-							"type": "text",
-							"disabled": true
-						},
-						{
 							"key": "fileData",
 							"type": "file",
 							"src": "/C:/Training/CheckForViruses/files/fileClean.txt"
@@ -164,12 +158,6 @@
 					"mode": "formdata",
 					"formdata": [
 						{
-							"key": "fileName",
-							"value": "fileName",
-							"type": "text",
-							"disabled": true
-						},
-						{
 							"key": "fileData",
 							"type": "file",
 							"src": "/C:/Training/CheckForViruses/files/fileInfected.txt"
@@ -197,7 +185,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/fileStatus?fileId=8fb18131-8f7b-4ea1-a646-84f311e7eb78",
+					"raw": "http://localhost:8080/api/fileStatus?fileId=76564f5b-0073-4328-89dd-5f06891d75c8",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -210,7 +198,7 @@
 					"query": [
 						{
 							"key": "fileId",
-							"value": "8fb18131-8f7b-4ea1-a646-84f311e7eb78"
+							"value": "76564f5b-0073-4328-89dd-5f06891d75c8"
 						}
 					]
 				}
