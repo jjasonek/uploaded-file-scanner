@@ -24,7 +24,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class File {
+public class UploadedFile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)     // GenerationType.IDENTITY did not work for MySQL

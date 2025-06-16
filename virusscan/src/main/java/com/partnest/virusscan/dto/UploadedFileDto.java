@@ -4,11 +4,9 @@ import com.partnest.virusscan.constants.FileStatus;
 import lombok.Builder;
 import lombok.Data;
 
-import java.io.Serializable;
-
 @Builder
 @Data
-public class FileDto {
+public class UploadedFileDto {
     private String fileId;
     private String fileName;
     private FileStatus fileStatus;

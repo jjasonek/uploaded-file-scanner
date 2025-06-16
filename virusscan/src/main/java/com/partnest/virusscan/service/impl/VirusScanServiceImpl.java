@@ -3,7 +3,7 @@ package com.partnest.virusscan.service.impl;
 import com.partnest.virusscan.apiclient.VirusScanClient;
 import com.partnest.virusscan.constants.FileConstants;
 import com.partnest.virusscan.constants.FileStatus;
-import com.partnest.virusscan.entity.File;
+import com.partnest.virusscan.entity.UploadedFile;
 import com.partnest.virusscan.exception.FileScanException;
 import com.partnest.virusscan.service.IFileService;
 import com.partnest.virusscan.service.IVirusScanService;
@@ -24,11 +24,11 @@ public class VirusScanServiceImpl implements IVirusScanService {
     @Override
     public void scanFile(String fileId) {
         log.info("Scanning file: {}", fileId);
-        File file = fileService.getFile(fileId);
-        File updatedFile = fileService.updateFileStatus(file, FileStatus.SCANNING);
-        String result = virusScanClient.scanFile(file.getFileData());
+        UploadedFile uploadedFile = fileService.getFile(fileId);
+        UploadedFile updatedUploadedFile = fileService.updateFileStatus(uploadedFile, FileStatus.SCANNING);
+        String result = virusScanClient.scanFile(uploadedFile.getFileData());
         log.info("Scan result: {}", result);
-        fileService.updateFileStatus(updatedFile, evaluateScanResult(result, fileId));
+        fileService.updateFileStatus(updatedUploadedFile, evaluateScanResult(result, fileId));
     }
 
     private FileStatus evaluateScanResult(String scanResult, String fileId) {

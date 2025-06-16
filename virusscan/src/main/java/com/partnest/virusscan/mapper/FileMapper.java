@@ -1,37 +1,37 @@
 package com.partnest.virusscan.mapper;
 
-import com.partnest.virusscan.dto.FileDto;
-import com.partnest.virusscan.dto.FileResponseDto;
-import com.partnest.virusscan.entity.File;
+import com.partnest.virusscan.dto.UploadedFileDto;
+import com.partnest.virusscan.dto.UploadedFileResponseDto;
+import com.partnest.virusscan.entity.UploadedFile;
 
 import java.util.UUID;
 
 public final class FileMapper {
 
-    public static FileResponseDto entityToResponseDto(File file) {
-        return FileResponseDto.builder()
-                              .fileId(file.getFileId().toString())
-                              .fileName(file.getFileName())
-                              .fileStatus(file.getFileStatus())
+    public static UploadedFileResponseDto entityToResponseDto(UploadedFile uploadedFile) {
+        return UploadedFileResponseDto.builder()
+                                      .fileId(uploadedFile.getFileId().toString())
+                                      .fileName(uploadedFile.getFileName())
+                                      .fileStatus(uploadedFile.getFileStatus())
+                                      .build();
+    }
+
+    public static UploadedFileDto entityToDto(UploadedFile uploadedFile) {
+        return UploadedFileDto.builder()
+                              .fileId(uploadedFile.getFileId().toString())
+                              .fileName(uploadedFile.getFileName())
+                              .fileStatus(uploadedFile.getFileStatus())
+                              .fileData(uploadedFile.getFileData())
                               .build();
     }
 
-    public static FileDto entityToDto(File file) {
-        return FileDto.builder()
-                      .fileId(file.getFileId().toString())
-                      .fileName(file.getFileName())
-                      .fileStatus(file.getFileStatus())
-                      .fileData(file.getFileData())
-                      .build();
-    }
-
-    public static File dtoToEntity(FileDto fileDto) {
-        return File.builder()
-                   .fileId(fileDto.getFileId() != null ? UUID.fromString(fileDto.getFileId()) : null)
-                   .fileName(fileDto.getFileName())
-                   .fileStatus(fileDto.getFileStatus())
-                   .fileData(fileDto.getFileData())
-                   .build();
+    public static UploadedFile dtoToEntity(UploadedFileDto uploadedFileDto) {
+        return UploadedFile.builder()
+                           .fileId(uploadedFileDto.getFileId() != null ? UUID.fromString(uploadedFileDto.getFileId()) : null)
+                           .fileName(uploadedFileDto.getFileName())
+                           .fileStatus(uploadedFileDto.getFileStatus())
+                           .fileData(uploadedFileDto.getFileData())
+                           .build();
     }
 
 }

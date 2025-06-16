@@ -2,8 +2,8 @@ package com.partnest.virusscan.controller;
 
 import com.partnest.virusscan.constants.FileConstants;
 import com.partnest.virusscan.constants.FileStatus;
-import com.partnest.virusscan.dto.FileDto;
-import com.partnest.virusscan.dto.FileResponseDto;
+import com.partnest.virusscan.dto.UploadedFileDto;
+import com.partnest.virusscan.dto.UploadedFileResponseDto;
 import com.partnest.virusscan.exception.FileReadException;
 import com.partnest.virusscan.service.IFileService;
 import lombok.RequiredArgsConstructor;
@@ -28,28 +28,28 @@ public class FileController {
     private final IFileService fileService;
 
     @PostMapping(path = "/upload", consumes = "multipart/form-data")
-    public ResponseEntity<FileResponseDto> uploadFile(
+    public ResponseEntity<UploadedFileResponseDto> uploadFile(
             @RequestPart MultipartFile fileData
     ) {
         try {
-            FileDto fileDto = FileDto.builder()
-                                     .fileName(fileData.getOriginalFilename())
-                                     .fileStatus(FileStatus.NEW)
-                                     .fileData(fileData.getBytes()).build();
-            FileResponseDto fileResponseDto = fileService.persistFile(fileDto);
+            UploadedFileDto uploadedFileDto = UploadedFileDto.builder()
+                                                             .fileName(fileData.getOriginalFilename())
+                                                             .fileStatus(FileStatus.NEW)
+                                                             .fileData(fileData.getBytes()).build();
+            UploadedFileResponseDto uploadedFileResponseDto = fileService.persistFile(uploadedFileDto);
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(fileResponseDto);
+                    .body(uploadedFileResponseDto);
         } catch (IOException e) {
             throw new FileReadException(FileConstants.FILE_READ_EXCEPTION_MESSAGE);
         }
     }
 
     @GetMapping("/fileStatus")
-    public ResponseEntity<FileResponseDto> getFileStatus(@RequestParam String fileId) {
-        FileResponseDto fileResponseDto = fileService.getFileStatus(fileId);
+    public ResponseEntity<UploadedFileResponseDto> getFileStatus(@RequestParam String fileId) {
+        UploadedFileResponseDto uploadedFileResponseDto = fileService.getFileStatus(fileId);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(fileResponseDto);
+                .body(uploadedFileResponseDto);
     }
 }

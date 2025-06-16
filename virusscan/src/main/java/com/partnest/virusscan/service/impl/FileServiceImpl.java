@@ -2,9 +2,9 @@ package com.partnest.virusscan.service.impl;
 
 import com.partnest.virusscan.constants.FileConstants;
 import com.partnest.virusscan.constants.FileStatus;
-import com.partnest.virusscan.dto.FileDto;
-import com.partnest.virusscan.dto.FileResponseDto;
-import com.partnest.virusscan.entity.File;
+import com.partnest.virusscan.dto.UploadedFileDto;
+import com.partnest.virusscan.dto.UploadedFileResponseDto;
+import com.partnest.virusscan.entity.UploadedFile;
 import com.partnest.virusscan.exception.FileNotFoundException;
 import com.partnest.virusscan.mapper.FileMapper;
 import com.partnest.virusscan.rabbit.RabbitMQProducer;
@@ -25,30 +25,30 @@ public class FileServiceImpl implements IFileService {
 
     @Override
     @Transactional
-    public FileResponseDto persistFile(FileDto fileDto) {
-        File file = fileRepository.save(FileMapper.dtoToEntity(fileDto));
-        rabbitMQProducer.sendMessage(file.getFileId().toString());
-        return FileMapper.entityToResponseDto(file);
+    public UploadedFileResponseDto persistFile(UploadedFileDto uploadedFileDto) {
+        UploadedFile uploadedFile = fileRepository.save(FileMapper.dtoToEntity(uploadedFileDto));
+        rabbitMQProducer.sendMessage(uploadedFile.getFileId().toString());
+        return FileMapper.entityToResponseDto(uploadedFile);
     }
 
     @Override
-    public FileResponseDto getFileStatus(String fileId) {
-        File file = findFile(fileId);
-        return FileMapper.entityToResponseDto(file);
+    public UploadedFileResponseDto getFileStatus(String fileId) {
+        UploadedFile uploadedFile = findFile(fileId);
+        return FileMapper.entityToResponseDto(uploadedFile);
     }
 
     @Override
-    public File getFile(String fileId) {
+    public UploadedFile getFile(String fileId) {
         return findFile(fileId);
     }
 
     @Override
-    public File updateFileStatus(File file, FileStatus fileStatus) {
-        file.setFileStatus(fileStatus);
-        return fileRepository.save(file);
+    public UploadedFile updateFileStatus(UploadedFile uploadedFile, FileStatus fileStatus) {
+        uploadedFile.setFileStatus(fileStatus);
+        return fileRepository.save(uploadedFile);
     }
 
-    private File findFile(String fileId) {
+    private UploadedFile findFile(String fileId) {
         return fileRepository.findById(UUID.fromString(fileId))
                              .orElseThrow(() -> new FileNotFoundException(String.format(
                                      FileConstants.FILE_NOT_FOUND_EXCEPTION_MESSAGE,

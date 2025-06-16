@@ -1,18 +1,18 @@
 package com.partnest.virusscan.service;
 
 import com.partnest.virusscan.constants.FileStatus;
-import com.partnest.virusscan.dto.FileDto;
-import com.partnest.virusscan.dto.FileResponseDto;
-import com.partnest.virusscan.entity.File;
+import com.partnest.virusscan.dto.UploadedFileDto;
+import com.partnest.virusscan.dto.UploadedFileResponseDto;
+import com.partnest.virusscan.entity.UploadedFile;
 
 public interface IFileService {
 
-    public FileResponseDto persistFile(FileDto fileDto);
+    public UploadedFileResponseDto persistFile(UploadedFileDto uploadedFileDto);
 
-    public FileResponseDto getFileStatus(String fileId);
+    public UploadedFileResponseDto getFileStatus(String fileId);
 
-    public File getFile(String fileId);
+    public UploadedFile getFile(String fileId);
 
-    public File updateFileStatus(File file, FileStatus fileStatus);
+    public UploadedFile updateFileStatus(UploadedFile uploadedFile, FileStatus fileStatus);
 
 }
