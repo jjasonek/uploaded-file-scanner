@@ -17,8 +17,6 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMQConfig {
 
     private final RabbitMQConfigProperties rabbitMQConfigProperties;
-    private final RabbitMQConsumer rabbitMQConsumer;
-
 
     @Bean
     public Queue queue() {
