@@ -106,9 +106,11 @@ PUT localhost:1080/mockserver/expectation
 - Use transactions for file upload. **OK**
 - Use transaction for file status update. **OK**
 - Add actual virus scan functionality. **OK with mock**
-- Dockerize the application including MySQL and RabbitMQ.
+- Dockerize the application including MySQL and RabbitMQ. **OK**
 - Try some more appropriate date type for the file (blob/clob). **OK**
 - Try to work with file without "touching" it. (serializing / deserializing). **Not sure**
+- Try to replace @Transactional with something like acknowledge from RabbitMQ. 
+  Check if using @Transactional is really an antipattern here. 
 ### optional
 - Use MongoDB instead of MySQL
 - Use Kafka instead of RabbitMQ
